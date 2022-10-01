@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>learn Vue 3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="md:container md:mx-auto" id="app" v-cloak>
+        <login-form/>
+
+        <!-- {{ greetMsg }}<br/>
+        <input @keyup.enter="greet('greeting message says : ' + greetMsg)" type="text" v-model="greetMsg" />
+
+        <button @click="toogleBox2">Show Paragraph</button>
+        <p v-if="isVisible">It's visible!</p> -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        let app = Vue.createApp({
+            data: function() {
+                return {
+                    greetMsg: 'Hello its me Vue 3',
+                    isVisible: false
+                }
+            },
+            methods: {
+                toogleBox2() {
+                    this.toogleBox()
+                },
+                toogleBox() {
+                    this.isVisible = !this.isVisible
+                },
+                greet(greeting) {
+                    console.log(greeting)
+                }
+            }
+        })
+        app.component('login-form', {
+            template: `
+                <div class="container mx-auto">
+                    <h1 class="text-3xl bold mb-4">{{ title }}</h1>
+                    <form @submit.prevent="handleSubmit">
+                        <custom-input v-model="username" :label="usernameLabel" />
+                        <custom-input v-model="password" :label="passwordLabel" />
+                        <div class="text-md mb-3">
+                            <button type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            `,
+            components: ['custom-input'],
+            data: function() {
+                return {
+                    title: 'Form Login',
+                    username: '',
+                    password: '',
+                    usernameLabel: 'Username',
+                    passwordLabel: 'Password',
+                }
+            },
+            methods: {
+                handleSubmit() {
+                    alert('Hei ' + this.username + '! Welcome to the party')
+                }
+            }
+        })
+        app.component('custom-input', {
+            template: `
+                <div class="text-md mb-3">
+                    <label class="block mb-2">{{label}}</label>
+                    <input class="rounded-full px-2 py-1 border-2" type="text" v-model="inputValue">
+                </div>
+            `,
+            props: ['label', 'modelValue'],
+            computed: {
+                inputValue: {
+                    get() {
+                        return this.modelValue
+                    },
+                    set(value) {
+                        this.$emit('update:modelValue', value)
+                    }
+                }
+            },
+            // data() {
+            //     return {
+            //         inputValue: ''
+            //     }
+            // }
+        })
+
+        app.mount('#app')
+    </script>
+</body>
+</html>
